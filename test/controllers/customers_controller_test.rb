@@ -1,11 +1,12 @@
 require "test_helper"
+require 'date'
 
 describe CustomersController do
   # it "must be a real test" do
   #   flunk "Need real tests"
   # end
 
-  CUSTOMER_FIELDS = %w(id name registered_at postal_code phone).sort
+  CUSTOMER_FIELDS = %w(id name registered_at address city state postal_code phone).sort
   # Helper method!
   def parse_json(expected_type:, expected_status: :success)
     must_respond_with expected_status
@@ -47,11 +48,48 @@ describe CustomersController do
       customer.destroy
 
       get customer_path(customer)
-      
+
       body = parse_json(expected_type: Hash, expected_status: :not_found)
       expect(body).must_include "errors"
+    end
+  end
 
+  describe "create" do
+    before do
+      date = DateTime.now
+      @customer = {
+        name: "Ada",
+        registered_at: date,
+        address: "123 River Road",
+        city: "Seattle",
+        state: "WA",
+        postal_code: "98155",
+        phone: "206-421-9876"
+      }
     end
 
+    it "creates a new customer given valid data" do
+      expect{
+        post customers_path, params: { customer: @customer } }.must_change "Customer.count", 1
+      must_respond_with :success
+
+      body = parse_json(expected_type: Hash)
+      expect(body).must_include "id"
+    end
+
+    it "returns an error for invalid data" do
+      @customer = {
+        name: nil
+      }
+
+      expect{
+        post customers_path, params: { customer: @customer } }.wont_change "Customer.count"
+        # binding.pry
+        body = JSON.parse(response.body)
+        expect(body).must_be_kind_of Hash
+        expect(body).must_include "errors"
+        expect(body["errors"]).must_include "name"
+        must_respond_with :bad_request
+      end
   end
 end

@@ -1,3 +1,5 @@
+require 'date'
+
 class CustomersController < ApplicationController
   def index
     customers = Customer.all
@@ -17,13 +19,23 @@ class CustomersController < ApplicationController
     end
   end
 
+  def create
+    customer = Customer.new(customer_params)
+    # binding.pry
+    if customer.save
+      render json: { id: customer.id }, status: :ok
+    else
+      render_error(:bad_request, customer.errors.messages)
+    end
+  end
+
   private
 
   def customer_params
-    params.require(:customer).permit(:id, :name, :registered_at, :postal_code, :phone)
+    params.require(:customer).permit(:id, :name, :registered_at, :address, :city, :state, :postal_code, :phone)
   end
 
   def jsonify(customer_data)
-    return customer_data.as_json(only: [:id, :name, :registered_at, :postal_code, :phone])
+    return customer_data.as_json(only: [:id, :name, :registered_at, :address, :city, :state, :postal_code, :phone])
   end
 end
