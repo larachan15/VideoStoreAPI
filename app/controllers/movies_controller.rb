@@ -30,10 +30,10 @@ class MoviesController < ApplicationController
   private
 
   def movie_params
-    params.require(:movie).permit(:id, :title, :overview, :release_date, :inventory)
+    params.require(:movie).permit(:id, :title, :overview, :release_date, :inventory, :available_inventory)
   end
 
   def jsonify(movie_data)
-    return movie_data.as_json(only: [:id, :title, :overview, :release_date, :inventory])
+    return movie_data.as_json(only: [:id, :title, :overview, :release_date, :inventory, :available_inventory])
   end
 end
