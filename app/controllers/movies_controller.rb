@@ -1,15 +1,12 @@
 class MoviesController < ApplicationController
   def index
     movies = Movie.all
-<<<<<<< HEAD
-    # if movies
-    render json: jsonify(movies), status: :ok #response code
-    # else
-    #   render_errors(:not_found, { movies: ["No movies found."]})
-    # end
-=======
-    render json: movies.as_json(only: [:id, :title, :release_date]), status: :ok #response code
->>>>>>> 1a51ef16ab677427f623405f48a4ff3a5e8edaab
+
+    if movies
+      render json: movies.as_json(only: [:id, :title, :release_date]), status: :ok #response code
+    else
+      render_errors(:not_found, { movies: ["No movies found."]})
+    end
   end
 
   def show
@@ -42,17 +39,7 @@ class MoviesController < ApplicationController
   private
 
   def movie_params
-<<<<<<< HEAD
-    # removed .require(:movie) and this fixed smoke tests
-    params.permit(:title, :overview, :release_date, :inventory) #, :available_inventory
-=======
-    # binding.pry
-<<<<<<< HEAD
-    params.permit(:title, :overview, :release_date, :inventory,  :available_inventory)
->>>>>>> fecf9952f581f0cf37ebc96a9ef6c5f6a722fc75
-=======
     params.permit(:title, :overview, :release_date, :inventory, :available_inventory)
->>>>>>> 1a51ef16ab677427f623405f48a4ff3a5e8edaab
   end
 
   def jsonify(movie_data)
