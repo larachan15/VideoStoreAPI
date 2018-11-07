@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_07_101146) do
+ActiveRecord::Schema.define(version: 2018_11_07_185846) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 2018_11_07_101146) do
     t.integer "inventory"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "available_inventory", default: 0
+    t.integer "available_inventory"
   end
 
   create_table "rentals", force: :cascade do |t|
@@ -43,6 +43,12 @@ ActiveRecord::Schema.define(version: 2018_11_07_101146) do
     t.date "checkout_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "customer_id"
+    t.bigint "movie_id"
+    t.index ["customer_id"], name: "index_rentals_on_customer_id"
+    t.index ["movie_id"], name: "index_rentals_on_movie_id"
   end
 
+  add_foreign_key "rentals", "customers"
+  add_foreign_key "rentals", "movies"
 end
