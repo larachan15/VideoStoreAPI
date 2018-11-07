@@ -5,9 +5,11 @@ one:
   overview: cute fish
   release_date: 2018-11-05
   inventory: 100
+  available_inventory: 20
 
 two:
   title: Up
   overview: cute dog
   release_date: 2018-11-05
   inventory: 200
+  available_inventory: 20
