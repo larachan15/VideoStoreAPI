@@ -1,7 +1,12 @@
 class MoviesController < ApplicationController
   def index
     movies = Movie.all
-    render json: movies.as_json(only: [:id, :title, :release_date]), status: :ok #response code
+
+    if movies
+      render json: movies.as_json(only: [:id, :title, :release_date]), status: :ok #response code
+    else
+      render_errors(:not_found, { movies: ["No movies found."]})
+    end
   end
 
   def show
@@ -9,6 +14,7 @@ class MoviesController < ApplicationController
 
     if movie
       render json: jsonify(movie), status: :ok #response code
+      # render json: movie.as_json(only: [:title, :overview, :release_date, :inventory, :available_inventory]), status: :ok
     else
       # options
       # head :not_found
@@ -24,6 +30,7 @@ class MoviesController < ApplicationController
     # binding.pry
     if movie.save
       render json: { id: movie.id }, status: :ok
+      # render json: movie.as_json(only: [:title, :overview, :release_date, :inventory, :available_inventory]), status: :ok
     else
       render_error(:bad_request, movie.errors.messages)
     end
@@ -32,7 +39,6 @@ class MoviesController < ApplicationController
   private
 
   def movie_params
-    # binding.pry
     params.permit(:title, :overview, :release_date, :inventory, :available_inventory)
   end
 
