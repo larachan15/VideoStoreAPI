@@ -33,7 +33,7 @@ class MoviesController < ApplicationController
 
   def movie_params
     # binding.pry
-    params.permit(:title, :overview, :release_date, :inventory,  :available_inventory)
+    params.permit(:title, :overview, :release_date, :inventory, :available_inventory)
   end
 
   def jsonify(movie_data)
