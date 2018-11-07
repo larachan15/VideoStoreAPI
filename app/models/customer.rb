@@ -1,5 +1,5 @@
 class Customer < ApplicationRecord
-  has_many :movies
+  has_many :rentals
 
   validates :name, presence: true
   validates :address, presence: true
