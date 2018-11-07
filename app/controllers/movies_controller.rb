@@ -23,7 +23,9 @@ class MoviesController < ApplicationController
   end
 
   def create
+    # binding.pry
     movie = Movie.new(movie_params)
+
     # binding.pry
     if movie.save
       render json: { id: movie.id }, status: :ok
@@ -36,11 +38,16 @@ class MoviesController < ApplicationController
   private
 
   def movie_params
+<<<<<<< HEAD
     # removed .require(:movie) and this fixed smoke tests
     params.permit(:title, :overview, :release_date, :inventory) #, :available_inventory
+=======
+    # binding.pry
+    params.permit(:title, :overview, :release_date, :inventory,  :available_inventory)
+>>>>>>> fecf9952f581f0cf37ebc96a9ef6c5f6a722fc75
   end
 
   def jsonify(movie_data)
-    return movie_data.as_json(only: [:id, :title, :overview, :release_date, :inventory])
+    return movie_data.as_json(only: [:id, :title, :overview, :release_date, :inventory, :available_inventory])
   end
 end
