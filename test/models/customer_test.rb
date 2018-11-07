@@ -60,8 +60,8 @@ describe Customer do
   it "does not accept phone number that has incorrect format" do
     customers(:one).postal_code = "1"
     expect(customers(:one).valid?).must_equal false
-    # customers(:one).postal_code = "1-1-1"
-    # expect(customers(:one).valid?).must_equal false
+    customers(:one).postal_code = "1-1-1"
+    expect(customers(:one).valid?).must_equal false
     customers(:one).postal_code = "123-456-789"
     expect(customers(:one).valid?).must_equal false
     customers(:one).postal_code = "123-456-7890"
