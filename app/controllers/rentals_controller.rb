@@ -20,16 +20,21 @@ class RentalsController < ApplicationController
   end
 
   def checkout
+
     if params[:customer_id]
       customer = Customer.find_by(id: params[:customer_id])
       movie = Movie.find_by(id: params[:movie_id])
-
-      checkin_date = Date.today(checkin_date) + 7
+# binding.pry
       checkout_date = Time.now
+      checkin_date = Date.today(checkout_date) + 7
+
 
       rental = Rental.new(customer_id: customer.id, movie_id: movie.id, checkin_date: checkin_date, checkout_date: checkout_date)
 
+
+
       if rental.save
+        # binding.pry
         render json: { customer_id: customer.id, movie_id: movie.id }, status: :ok
       else
         render_error(:bad_request, rental.errors.messages)
