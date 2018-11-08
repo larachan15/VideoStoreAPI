@@ -11,4 +11,13 @@ class Customer < ApplicationRecord
 
   # format: { :with => /\d{3}-\d{3}-\d{4}/,
   # :message => "Phone number must be in xxx-xxx-xxxx format." }
+  def increment_movies_checked_out_count!
+    self.movies_checked_out_count = self.movies_checked_out_count + 1
+    self.save
+  end
+
+  def decrement_movies_checked_out_count!
+    self.movies_checked_out_count = self.movies_checked_out_count - 1
+    self.save
+  end
 end
