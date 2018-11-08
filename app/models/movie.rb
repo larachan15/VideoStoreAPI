@@ -18,4 +18,9 @@ class Movie < ApplicationRecord
     self.available_inventory = self.available_inventory - 1
     self.save
   end
+
+  def increment_inventory!
+    self.available_inventory = self.available_inventory + 1
+    self.save
+  end
 end
