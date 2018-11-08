@@ -26,7 +26,7 @@ class MoviesController < ApplicationController
   def create
     # binding.pry
     movie = Movie.new(movie_params)
-
+    movie.available_inventory = movie.inventory
     # binding.pry
     if movie.save
       render json: { id: movie.id }, status: :ok
@@ -39,7 +39,7 @@ class MoviesController < ApplicationController
   private
 
   def movie_params
-    params.permit(:title, :overview, :release_date, :inventory, :available_inventory)
+    params.permit(:title, :overview, :release_date, :inventory)
   end
 
   def jsonify(movie_data)

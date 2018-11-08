@@ -20,25 +20,30 @@ class RentalsController < ApplicationController
   end
 
   def checkout
+    customer = Customer.find_by(id: params[:customer_id])
+    movie = Movie.find_by(id: params[:movie_id])
 
-    if params[:customer_id]
-      customer = Customer.find_by(id: params[:customer_id])
-      movie = Movie.find_by(id: params[:movie_id])
+    if customer && movie && movie.is_available?
 # binding.pry
       checkout_date = Time.now
       checkin_date = Date.today(checkout_date) + 7
 
-
       rental = Rental.new(customer_id: customer.id, movie_id: movie.id, checkin_date: checkin_date, checkout_date: checkout_date)
 
-
-
       if rental.save
+        movie.decrement_inventory!
         # binding.pry
-        render json: { customer_id: customer.id, movie_id: movie.id }, status: :ok
+        render json: {
+          customer_id: customer.id,
+          movie_id: movie.id,
+          available_inventory: movie.available_inventory,
+          rental_id: rental.id
+        }, status: :ok
       else
         render_error(:bad_request, rental.errors.messages)
       end
+    else
+      render_error(:bad_request, "Invalid parameters")
     end
   end
 end
