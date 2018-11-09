@@ -40,4 +40,41 @@ describe Movie do
     movies(:one).inventory = -1
     expect(movies(:one).valid?).must_equal false
   end
+
+  describe 'relations' do
+    it 'has rentals' do
+      rental = rentals(:one)
+      movie = movies(:nemo)
+
+      movie = Movie.find_by(id: rental.movie_id )
+      expect(movie.rentals.first.id).must_equal rental.id
+    end
+  end
+
+  describe "movie model methods" do
+    it "checks movie is available" do
+      expect(Movie.first.is_available?).must_equal true
+      invalid_movie = Movie.first
+      invalid_movie.available_inventory = 0
+      expect(invalid_movie.is_available?).must_equal false
+    end
+
+    it "decrement inventory" do
+      movie = Movie.first
+      expect(movie.available_inventory).must_equal 200
+      movie.decrement_inventory!
+      movie.reload
+      expect(movie.available_inventory).must_equal 199
+    end
+
+    it "increment inventory" do
+      movie = Movie.first
+      movie.decrement_inventory!
+      movie.reload
+      expect(movie.available_inventory).must_equal 199
+      movie.increment_inventory!
+      movie.reload
+      expect(movie.available_inventory).must_equal 200
+    end
+  end
 end
