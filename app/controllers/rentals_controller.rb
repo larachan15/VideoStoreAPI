@@ -1,7 +1,7 @@
 class RentalsController < ApplicationController
   def checkin
     rental = Rental.get_rental(params[:customer_id], params[:movie_id])
-
+    
     if rental
       rental.checkin_date = Time.now
       # binding.pry
@@ -33,6 +33,7 @@ class RentalsController < ApplicationController
       rental = Rental.new(customer_id: customer.id, movie_id: movie.id, due_date: due_date, checkout_date: checkout_date)
 
       if rental.save
+        # binding.pry
         movie.decrement_inventory!
         customer.increment_movies_checked_out_count!
         # binding.pry
