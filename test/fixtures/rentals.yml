@@ -1,9 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  checkin_date: 2018-11-05
-  checkout_date: 2018-11-05
+  customer: karis
+  movie: nemo
+  due_date: "2018-11-05"
 
 two:
-  checkin_date: 2018-11-05
-  checkout_date: 2018-11-05
+  customer: dionisia
+  movie: up
+  due_date: "2018-12-15"

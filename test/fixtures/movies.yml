@@ -1,13 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+nemo:
   title: Nemo
   overview: cute fish
   release_date: 2018-11-05
   inventory: 100
   available_inventory: 20
 
-two:
+up:
   title: Up
   overview: cute dog
   release_date: 2018-11-05
