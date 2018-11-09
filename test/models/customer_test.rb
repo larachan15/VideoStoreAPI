@@ -74,4 +74,31 @@ describe Customer do
     customers(:one).movies_checked_out_count = nil
     expect(customers(:one).valid?).must_equal false
   end
+
+  describe 'relations' do
+    it 'has rentals' do
+      rental = rentals(:one)
+      customer = customers(:karis)
+
+      customer = Customer.find_by(id: rental.customer_id )
+      expect(customer.rentals.first.id).must_equal rental.id
+    end
+  end
+
+  describe "customer model methods" do
+    it "increments movies_checked_out_count when movie is checked out" do
+      customer = Customer.first
+      expect(customer.movies_checked_out_count).must_equal 0
+      customer.increment_movies_checked_out_count!
+      expect(customer.movies_checked_out_count).must_equal 1
+    end
+
+    it "decrements movies_checked_out_count when movie is checked in" do
+      customer = Customer.first
+      customer.increment_movies_checked_out_count!
+      expect(customer.movies_checked_out_count).must_equal 1
+      customer.decrement_movies_checked_out_count!
+      expect(customer.movies_checked_out_count).must_equal 0
+    end
+  end
 end

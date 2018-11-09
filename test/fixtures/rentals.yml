@@ -3,7 +3,8 @@
 one:
   customer: karis
   movie: nemo
-  due_date: "2018-11-05"
+  due_date: "2018-11-07"
+  checkout_date: "2018-11-01"
 
 two:
   customer: dionisia
