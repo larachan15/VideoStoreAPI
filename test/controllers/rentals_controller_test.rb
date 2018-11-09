@@ -7,44 +7,53 @@ describe RentalsController do
 
   describe "checkin" do
     it "correctly updates available inventory" do
-      rental = rentals(:one)
+      post checkout_path, params: { customer_id: customers(:dionisia).id, movie_id: movies(:up).id }
+      movies(:up).reload
+      customers(:dionisia).reload
+      # binding.pry
+      expect(movies(:up).available_inventory).must_equal 199
+      expect(customers(:dionisia).movies_checked_out_count).must_equal 1
+
+      post checkin_path, params: { customer_id: customers(:dionisia).id, movie_id: movies(:up).id }
+      movies(:up).reload
+      customers(:dionisia).reload
+      expect(movies(:up).available_inventory).must_equal 200
+      expect(customers(:dionisia).movies_checked_out_count).must_equal 0
+    end
+
+    it "doesn't increase available_inventory more than what is actually available" do
+      rental = rentals(:two)
       customer = rental.customer
       movie = rental.movie
 
-      expect {
-        post checkin_path, params: { customer_id: rental.customer_id, movie_id: rental.movie_id }
-      }.must_change "Movie.available_inventory", 2
-
+      post checkin_path, params: { customer_id: customers(:dionisia).id, movie_id: movies(:up).id }
+      movies(:up).reload
+      expect(movies(:up).available_inventory).must_equal 200
     end
 
     it "won't update available inventory if invalid" do
-
-
+      post checkin_path, params: { customer_id: nil, movie_id: movies(:up).id }
+      movies(:up).reload
+      expect(movies(:up).available_inventory).must_equal 200
+      must_respond_with :bad_request
     end
   end
 
   describe "checkout" do
-
-    before do
-      @params = {customer_id: customers(:dionisia).id, movie_id: movies(:up).id}
-    end
-
     it "successfully creates a new rental" do
-
-      customer = rental.customer
-      movie = rental.movie
-      rental = Rental.new(customer_id: customer, movie_id: movie, due_date: due_date, checkout_date: checkout_date)
-
-      expect {
-        post checkin_path, params: @params
-      }.must_change "Rental.count", 3
-
+      post checkout_path, params: { customer_id: customers(:dionisia).id, movie_id: movies(:up).id }
+      movies(:up).reload
+      customers(:dionisia).reload
+      # binding.pry
+      expect(movies(:up).available_inventory).must_equal 199
+      expect(customers(:dionisia).movies_checked_out_count).must_equal 1
     end
 
     it "won't create a rental if invalid" do
-
-
+      post checkout_path, params: { customer_id: nil, movie_id: movies(:up).id }
+      movies(:up).reload
+      expect(movies(:up).available_inventory).must_equal 200
+      must_respond_with :bad_request
     end
-
   end
 end
