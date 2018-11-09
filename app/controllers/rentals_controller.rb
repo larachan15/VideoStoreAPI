@@ -8,7 +8,11 @@ class RentalsController < ApplicationController
       if rental.save
         rental.movie.increment_inventory!
         rental.customer.decrement_movies_checked_out_count!
-        render json: { rental_id: rental.id, customer_id: rental.customer.id, movie_id: rental.movie.id }, status: :ok
+        render json: {
+          rental_id: rental.id,
+          customer_id: rental.customer.id,
+          available_inventory: rental.movie.available_inventory,
+          movie_id: rental.movie.id }, status: :ok
       else
         render_error(:bad_request, rental.errors.messages)
       end
